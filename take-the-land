@@ -1,0 +1,51 @@
+def rect_area(M):
+  row,col = len(M), len(M[0])
+  dph = [[0 for j in range (col)] for i in range(row+1)]
+  dpl = [[0 for j in range (col)] for i in range(row+1)]
+  dpr = [[col-1 for j in range (col)] for i in range(row+1)]
+
+  for r in range(1, row+1):
+    lb = 0
+    for c in range(col):
+      if M[r-1][c] == 1:
+        dph[r][c] = dph[r-1][c]+1
+        dpl[r][c] = max(lb, dpl[r-1][c])
+      else:
+        lb = c+1
+    rb=col-1
+    for c in range(col-1, -1, -1):
+      if M[r-1][c] == 1:
+        dpr[r][c] = min(rb, dpr[r-1][c])
+      else:
+        rb = c-1 
+
+  maxarea = 0
+  for r in range (1, row+1):
+    for c in range(col):
+      if M[r-1][c] == 1:
+        maxarea = max(maxarea, (dpr[r][c] - dpl[r][c]+1) * dph[r][c])
+  return maxarea
+
+def konversi(M):
+  row,col = len(M), len(M[0])
+  for i in range(row):
+    for j in range(col):
+      if M[i][j] == 0:
+        M[i][j] = 1
+      else:
+        M[i][j] = 0
+  return M
+
+if __name__ == '__main__':
+  while True:
+    length = list(map(int, input().rstrip().split()))
+    if length[1] == 0 & length[0] == 0:
+      break
+    else:
+      n = length[0]
+      M = []
+      for _ in range(n):
+        M.append(list(map(int, input().rstrip().split())))
+      konversi(M)
+      ans = rect_area(M)
+      print(ans)
