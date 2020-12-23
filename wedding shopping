@@ -1,0 +1,36 @@
+#include <iostream>
+
+using namespace std;
+
+int M, C;
+int main()
+{
+
+    int i,j,k,jum,x,y,z;
+    cin >> jum;
+    for (z=1; z<=jum; z++){
+        int memo[201][21] = {{0}};
+        memo[0][0] = 1;
+        cin >> M >> C;
+        for (i=0; i<C; i++){
+            cin >> x;
+            for (j=0; j<x; j++){
+                cin >> y;
+                for (k=0; k+y<=M; k++){
+                    memo[k+y][i+1] |= memo[k][i];
+                }
+            }
+        }
+        for (i=M; i>=0; i--) {
+            if(memo[i][C]){
+                break;
+            }
+        }
+        if (i<0) {
+            cout << "no solution" << endl;
+        } else {
+            cout << i << endl;
+        }
+    }
+    return 0;
+}
